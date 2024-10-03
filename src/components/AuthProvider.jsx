@@ -47,10 +47,11 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const register = async (username, email, password) => {
+  const register = async (username, email, password, avatar) => {
     try {
       const csrfToken = await getCsrfToken();
-      await registerUser({ username, email, password, csrfToken });
+      await registerUser({ username, email, password, csrfToken, avatar });
+      
       alert("Registration successful. Redirecting to login...");
       navigate("/login");
     } catch (err) {
