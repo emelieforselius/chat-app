@@ -1,27 +1,25 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../api";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "./AuthProvider";
 import styles from "./Login.module.css";
+import {Link} from 'react-router-dom';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
+  const {login} = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    console.log("Username:", username);
+    console.log("Password:", password);
+
+
     try {
-      const userData = await loginUser({ username, password });
-      localStorage.setItem('userData', JSON.stringify(userData))
-      onLogin(userData);
-      navigate("/chat");
+      await login(username, password);
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error);
-      } else {
-        setError("Login failed");
-      }
+      setError(err.message);
     }
   };
 

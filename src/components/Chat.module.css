@@ -10,7 +10,7 @@
 
 .messagesContainer {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction:column-reverse;
   flex: 1;
   padding: 10px;
   overflow-y: auto;
@@ -32,13 +32,13 @@
 .sent {
   align-self: flex-end;
   background-color: #d1ffd1;
-  margin-left: auto;
+  
 }
 
 .received {
   align-self: flex-start;
   background-color: #e0e0e0;
-  margin-right: auto;
+
 }
 
 .deleteButton {

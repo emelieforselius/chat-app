@@ -16,7 +16,7 @@ export const registerUser = async ({
   username,
   email,
   password,
-  avatar = "",
+  avatar,
   csrfToken,
 }) => {
   try {
@@ -65,67 +65,7 @@ export const loginUser = async (credentials) => {
 
     return userData;
   } catch (error) {
-    console.error("Error during login", error);
-    throw error;
-  }
-};
-
-export const fetchMessages = async () => {
-  
-  try {
-    const token = localStorage.getItem("token");
-    const csrfToken = await getCsrfToken();
-    const response = await axios.get(`${API_BASE_URL}/messages`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'X-CSRF-Token': csrfToken,
-      },
-    });
-    console.log("Fetched messages:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching messages", error);
-    throw error;
-  }
-};
-
-export const createMessage = async (messageData) => {
-  try {
-    const token = localStorage.getItem("token");
-    const csrfToken = await getCsrfToken();
-    const response = await axios.post(`${API_BASE_URL}/messages`, messageData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "X-CSRF-Token": csrfToken,
-        "Content-Type": "application/json", 
-      },
-    });
-    if (response.status !== 201) {
-      throw new Error("Failed to create message");
-    }
-    return response.data;
-  } catch (error) {
-    console.error("Error creating message", error);
-    throw error;
-  }
-};
-
-export const deleteMessage = async (messageId) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios.delete(
-      `${API_BASE_URL}/messages/${messageId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (response.status !== 204) {
-      throw new Error("Failed to delete message");
-    }
-  } catch (error) {
-    console.error("Error deleting message", error);
+    console.error("Error during login", error.response ? error.response.data : error);
     throw error;
   }
 };
