@@ -6,7 +6,6 @@ import axios from "axios";
 
 const API_BASE_URL = "https://chatify-api.up.railway.app";
 
-
 const Chat = () => {
   const { user, userId } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
@@ -54,7 +53,6 @@ const Chat = () => {
       console.log("Fetched messages:", response.data);
       console.log("User ID from AuthContext:", userId);
 
-     
       setMessages(response.data.sort((a, b) => a.timestamp - b.timestamp));
 
       return response.data;
@@ -99,8 +97,9 @@ const Chat = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      
-      if (response.status !== 204) {
+
+      console.log("Response status:", response.status);
+      if (response.status !== 200) {
         throw new Error("Failed to delete message");
       }
     } catch (error) {
@@ -137,14 +136,12 @@ const Chat = () => {
   };
 
   const handleDeleteMessage = async (messageId) => {
-    console.log("Attempting to delete message with ID:", messageId);
     try {
       await deleteMessage(messageId);
 
-     
       setMessages((prevMessages) =>
-      prevMessages.filter((msg) => msg.id !== messageId)
-    );
+        prevMessages.filter((msg) => msg.id !== messageId)
+      );
     } catch (error) {
       console.error("Error deleting message:", error);
     }
@@ -154,13 +151,13 @@ const Chat = () => {
     <div className={styles.chatContainer}>
       <div className={styles.messagesContainer}>
         {fakeChat
-        .slice()
-        .reverse()
-        .map((msg, index) => (
-          <div key={index} className={`${styles.message} ${styles.received}`}>
-            <p>{msg.text}</p>
-          </div>
-        ))}
+          .slice()
+          .reverse()
+          .map((msg, index) => (
+            <div key={index} className={`${styles.message} ${styles.received}`}>
+              <p>{msg.text}</p>
+            </div>
+          ))}
 
         {messages
           .slice()
@@ -172,10 +169,6 @@ const Chat = () => {
                 messages.userId === user.userId ? styles.sent : styles.received
               }`}
             >
-
-
-
-
               <p>{msg.text}</p>
               {messages.userId === user.userId && (
                 <button
@@ -188,9 +181,6 @@ const Chat = () => {
             </div>
           ))}
       </div>
-
-
-
 
       {user && (
         <form onSubmit={handleSendMessage} className={styles.inputContainer}>
