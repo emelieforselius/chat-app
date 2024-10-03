@@ -22,7 +22,7 @@ export const registerUser = async ({
   try {
     const response = await axios.post(
       `${API_BASE_URL}/auth/register`,
-      { username, email, password, avatar },
+      { username, email, password, avatar, csrfToken },
       {
         headers: {
           "Content-Type": "application/json",
@@ -30,6 +30,7 @@ export const registerUser = async ({
         },
       }
     );
+    console.log("Server response:", response);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data && error.response.data.error) {
@@ -58,8 +59,8 @@ export const loginUser = async (credentials) => {
     }
 
     const userData = response.data;
+    console.log("User data from login:", userData);
     localStorage.setItem("token", userData.token);
-    localStorage.setItem("user", JSON.stringify(userData));
 
     axios.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
 

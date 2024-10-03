@@ -9,6 +9,13 @@
     align-items: center;
     border-right: 1px solid #ddd;
   }
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
   
   .logoutButton {
     align-self: flex-start;
