@@ -11,6 +11,8 @@ import Layout from "./components/Layout";
 const App = () => {
   return (
     <AuthProvider>
+      <div className={styles.appContainer}>  
+      <div className={styles.mainContent}>
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
@@ -19,6 +21,8 @@ const App = () => {
               <Route path="/chat" element={<Layout><Chat /></Layout>} />
             </Route>
           </Routes>
+          </div>
+          </div>
     </AuthProvider>
   );
 };

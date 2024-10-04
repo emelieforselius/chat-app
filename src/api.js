@@ -30,7 +30,6 @@ export const registerUser = async ({
         },
       }
     );
-    console.log("Server response:", response);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data && error.response.data.error) {
@@ -43,7 +42,6 @@ export const registerUser = async ({
 
 export const loginUser = async (credentials) => {
   try {
-
     const response = await axios.post(
       `${API_BASE_URL}/auth/token`,
       credentials,
@@ -59,14 +57,16 @@ export const loginUser = async (credentials) => {
     }
 
     const userData = response.data;
-    console.log("User data from login:", userData);
     localStorage.setItem("token", userData.token);
 
     axios.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
 
     return userData;
   } catch (error) {
-    console.error("Error during login", error.response ? error.response.data : error);
+    console.error(
+      "Error during login",
+      error.response ? error.response.data : error
+    );
     throw error;
   }
 };
