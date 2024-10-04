@@ -148,6 +148,8 @@ const Chat = () => {
   };
 
   return (
+    <div className={styles.chatWrapper}>
+      <h1>Välkommen, {user ? user.decodedJWT.user : "Gäst"}!</h1>
     <div className={styles.chatContainer}>
       <div className={styles.messagesContainer}>
         {fakeChat
@@ -197,6 +199,7 @@ const Chat = () => {
           </button>
         </form>
       )}
+    </div>
     </div>
   );
 };
