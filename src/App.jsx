@@ -14,6 +14,7 @@ const App = () => {
       <div className={styles.appContainer}>  
       <div className={styles.mainContent}>
           <Routes>
+            <Route path="/" element={<Navigate to="/login" />}/>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
 
