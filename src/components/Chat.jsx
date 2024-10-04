@@ -3,6 +3,7 @@ import { getCsrfToken } from "../api";
 import styles from "./Chat.module.css";
 import { AuthContext } from "./AuthProvider";
 import axios from "axios";
+import DOMPurify from 'dompurify';
 
 const API_BASE_URL = "https://chatify-api.up.railway.app";
 
@@ -70,9 +71,11 @@ const Chat = () => {
     try {
       const token = localStorage.getItem("token");
       const csrfToken = await getCsrfToken();
+      const sanitizedMessage = DOMPurify.sanitize(messageData.text);
+
       const response = await axios.post(
         `${API_BASE_URL}/messages`,
-        messageData,
+       { ...messageData, text: sanitizedMessage},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -132,7 +135,10 @@ const Chat = () => {
     e.preventDefault();
     try {
       if (user) {
-        await createMessage({ userId: user.id, text: newMessage });
+        const sanitizedMessage = DOMPurify.sanitize(newMessage);
+        console.log("Original message:", newMessage);
+        console.log("Sanitized message:", sanitizedMessage);
+        await createMessage({ userId: user.id, text: sanitizedMessage });
       }
       setNewMessage("");
       await fetchMessages();
