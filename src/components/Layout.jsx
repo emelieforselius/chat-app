@@ -5,7 +5,6 @@ import { AuthContext } from "./AuthProvider";
 
 const Layout = ({children}) => {
     const {user, logout} = useContext(AuthContext);
-    console.log('User object:', user)
     return (
         <div className={styles.layoutContainer}>
             <SideNav user= {user} onLogout={logout}/>

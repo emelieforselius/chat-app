@@ -9,7 +9,6 @@ const API_BASE_URL = "https://chatify-api.up.railway.app";
 
 const Chat = () => {
   const { user, userId } = useContext(AuthContext);
-  console.log("User ID from AuthContext:", userId);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -52,14 +51,8 @@ const Chat = () => {
           },
         }
       );
-      console.log("Fetched messages:", response.data);
-      response.data.forEach(msg => {
-        console.log("Message ID:", msg.id, "User ID:", msg.userId);
-      });
-      console.log("User ID from AuthContext:", userId);
 
       setMessages(response.data.sort((a, b) => a.timestamp - b.timestamp));
-
       return response.data;
     } catch (error) {
       console.error("Error fetching messages", error);
@@ -95,8 +88,6 @@ const Chat = () => {
   };
 
   const deleteMessage = async (msgId) => {
-    console.log("Deleting message with ID:", msgId);
-
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(`${API_BASE_URL}/messages/${msgId}`, {
@@ -105,7 +96,6 @@ const Chat = () => {
         },
       });
 
-      console.log("Response status:", response.status);
       if (response.status !== 200) {
         throw new Error("Failed to delete message");
       }
@@ -116,9 +106,6 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    console.log("User ID from AuthContext:", userId);
-    console.log("User:", user);
-    
     const loadMessages = async () => {
       try {
         const data = await fetchMessages();
@@ -136,8 +123,6 @@ const Chat = () => {
     try {
       if (user) {
         const sanitizedMessage = DOMPurify.sanitize(newMessage);
-        console.log("Original message:", newMessage);
-        console.log("Sanitized message:", sanitizedMessage);
         await createMessage({ userId: user.id, text: sanitizedMessage });
       }
       setNewMessage("");
