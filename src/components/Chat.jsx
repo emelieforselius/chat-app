@@ -8,6 +8,7 @@ const API_BASE_URL = "https://chatify-api.up.railway.app";
 
 const Chat = () => {
   const { user, userId } = useContext(AuthContext);
+  console.log("User ID from AuthContext:", userId);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -51,6 +52,9 @@ const Chat = () => {
         }
       );
       console.log("Fetched messages:", response.data);
+      response.data.forEach(msg => {
+        console.log("Message ID:", msg.id, "User ID:", msg.userId);
+      });
       console.log("User ID from AuthContext:", userId);
 
       setMessages(response.data.sort((a, b) => a.timestamp - b.timestamp));
@@ -110,6 +114,8 @@ const Chat = () => {
 
   useEffect(() => {
     console.log("User ID from AuthContext:", userId);
+    console.log("User:", user);
+    
     const loadMessages = async () => {
       try {
         const data = await fetchMessages();
@@ -145,12 +151,11 @@ const Chat = () => {
     } catch (error) {
       console.error("Error deleting message:", error);
     }
-  };
+  }; 
 
   return (
-    <div className={styles.chatWrapper}>
+    <div>
       <h1>Välkommen, {user ? user.decodedJWT.user : "Gäst"}!</h1>
-    <div className={styles.chatContainer}>
       <div className={styles.messagesContainer}>
         {fakeChat
           .slice()
@@ -173,12 +178,14 @@ const Chat = () => {
             >
               <p>{msg.text}</p>
               {messages.userId === user.userId && (
-                <button
-                  onClick={() => handleDeleteMessage(msg.id)}
-                  className={styles.deleteButton}
-                >
-                  Radera
-                </button>
+              <span
+              onClick={() => handleDeleteMessage(msg.id)} 
+              role="button"
+              aria-label="Delete message"
+              style={{ marginLeft: '10px', cursor: 'pointer' }} 
+            >
+              🗑️
+            </span>
               )}
             </div>
           ))}
@@ -199,7 +206,6 @@ const Chat = () => {
           </button>
         </form>
       )}
-    </div>
     </div>
   );
 };
