@@ -12,10 +12,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    console.log("Username:", username);
-    console.log("Password:", password);
-
-
     try {
       await login(username, password);
     } catch (err) {
